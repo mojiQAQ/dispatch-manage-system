@@ -6,6 +6,16 @@ import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 export default defineConfig({
 	base: './',
+	server: {
+		host: '127.0.0.1',
+		port: 8080,
+		// proxy: {
+		// 	"/dispatch": {
+		// 		target: "http://localhost:7000",
+		// 		changeOrigin: true,
+		// 	}
+		// }
+	},
 	plugins: [
 		vue(),
 		VueSetupExtend(),

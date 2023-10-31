@@ -1,6 +1,9 @@
 import axios, {AxiosInstance, AxiosError, AxiosResponse, AxiosRequestConfig} from 'axios';
 
+const baseURL = 'http://127.0.0.1:8000/dispatch'
 const service:AxiosInstance = axios.create({
+    baseURL: baseURL,
+    // withCredentials: false,
     timeout: 5000
 });
 
