@@ -9,6 +9,11 @@
                             <span>{{ scope.row.ID }}</span>
                         </template>
                     </el-table-column>
+                    <el-table-column label="用户名" align="center">
+                        <template #default="scope">
+                            <span>{{ scope.row.name ? scope.row.name : '微信用户' }}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="角色" align="center">
                         <template #default="scope">
                             <span>{{ scope.row.role_cn }}</span>
@@ -19,9 +24,9 @@
                             <el-text>{{ scope.row.credit }}</el-text>
                         </template>
                     </el-table-column>
-                    <el-table-column label="可提现余额" align="center">
+                    <el-table-column label="可提现余额（元）" align="center">
                         <template #default="scope">
-                            <span>{{ scope.row.balance }}</span>
+                            <span>{{ scope.row.balance/100 }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="电话" align="center">
@@ -34,14 +39,14 @@
                             <span>{{ transferTime(scope.row.CreatedAt) }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" width="220" align="center">
+                    <!-- <el-table-column label="操作" width="220" align="center">
                         <template #header>
                             <el-input v-model="search" size="small" placeholder="输入关键字搜索" />
                         </template>
                         <template #default="scope">
                             <el-button type="primary" link @click="toOrderInfo(scope.row.ID)">查看详情</el-button>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
             </el-row>
             <el-row type="flex" justify="end" style="margin-top: 10px">

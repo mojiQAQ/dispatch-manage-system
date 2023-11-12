@@ -26,7 +26,7 @@
                                 <span>商品二维码：</span>
                             </el-col>
                             <el-col :span="12">
-                                <el-image style="width: 200px; height: 200px" loading="lazy" :src="orderInfo.context"/>
+                                <el-image :preview-src-list="[orderInfo.context]" fit="contain" style="width: 200px; height: 200px" loading="lazy" :src="orderInfo.context"/>
                             </el-col>
                         </el-row>
                     </div>
@@ -74,7 +74,11 @@
                         <span>任务 {{ scope.row.ID }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="user_id" label="用户名" align="center" />
+                <el-table-column label="子任务 ID" align="center">
+                    <template #default="scope">
+                        <span>{{ userid2name[scope.row.user_id] ? userid2name[scope.row.user_id] : '微信用户' }}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="" label="状态" align="center" >
                     <template #default="scope">
                         <el-text  :type="stateColor[scope.row.state]">{{ scope.row.state_cn }}</el-text>
@@ -95,6 +99,7 @@
                         <el-input v-model="search" size="small" placeholder="输入关键字搜索" />
                     </template>
                     <template #default="scope">
+                        <el-button type="primary" link @click="handleReview(scope.row)">查询订单</el-button>
                         <el-button type="primary" :disabled="scope.row.state!=2" link @click="handleReview(scope.row)">审核订单</el-button>
                     </template>
                 </el-table-column>
@@ -120,11 +125,11 @@
 
         <el-carousel height="1000px" indicator-position="outside">
             <el-carousel-item class="center" v-for="item in currentImgs" :key="item">
-                <el-image loading="lazy" :src="item" />
+                <el-image :preview-src-list="currentImgs" fit="contain" loading="lazy" :src="item" />
             </el-carousel-item>
         </el-carousel>
 
-        <template #footer>
+        <template v-if="currentSubOrderInfo.state===2" #footer>
             <span class="dialog-footer">
                 <el-button @click="showSubOrderInfo=false">取消</el-button>
                 <el-button type="primary" @click="confirmReview">通过</el-button>
@@ -144,6 +149,7 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 export default ({
     data() {
         return {
+            userid2name: {},
             order_id: undefined,
             orderInfo: {
                 ID: undefined,
@@ -195,6 +201,7 @@ export default ({
             this.order_id = this.$route.query.order_id
             console.log('init page', this.order_id);
             this.showSubOrderInfo = false;
+            this.getUserList()
             this.getOrderInfo()
             this.getSubOrders()
         },
@@ -221,6 +228,24 @@ export default ({
             }
 
             this.subOrders = res.data.sub_orders
+        },
+        getUserList: async function() {
+            let res = await getUsersAPI()
+            if (res.status != 200) {
+                ElMessage({
+                    showClose: true,
+                    message: res.data.message,
+                    type: 'error',
+                })
+            }
+
+            var users = res.data.users
+            var userid2name = {}
+            users.forEach(element => {
+                userid2name[element.ID] = element.name
+            });
+            this.userid2name = userid2name;
+            console.log('get tabledata', res);
         },
         reviewSubOrder: async function(sub_order_id, state) {
             const res = await reviewSubOrderAPI('test', this.order_id, sub_order_id, state)

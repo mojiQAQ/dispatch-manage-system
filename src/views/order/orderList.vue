@@ -11,6 +11,11 @@
                             <span>任务 {{ scope.row.ID }}</span>
                         </template>
                     </el-table-column>
+                    <el-table-column label="发布用户" align="center">
+                        <template #default="scope">
+                            <span>{{ userid2name[scope.row.user_id] ? userid2name[scope.row.user_id] : '微信用户' }}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="平台" align="center">
                         <template #default="scope">
                             <span>{{ scope.row.platform_cn }}</span>
@@ -66,18 +71,18 @@
 
 <script>
 
-import { getOrdersAPI } from '../../api/index'
+import { getOrdersAPI, getUsersAPI } from '../../api/index'
 import { ElMessage } from 'element-plus'
 
 export default {
     data() {
         return {
-
+            userid2name: {},
             tableData: [],
             searchKey: ['ID', 'state_cn', 'platform_cn'],
             search: '',
             currentPage: 1,
-            currentPageSize: 20,
+            currentPageSize: 10,
         }
     },
     methods: {
@@ -92,6 +97,24 @@ export default {
             }
 
             this.tableData = res.data.orders
+            console.log('get tabledata', res);
+        },
+        getUserList: async function() {
+            let res = await getUsersAPI()
+            if (res.status != 200) {
+                ElMessage({
+                    showClose: true,
+                    message: res.data.message,
+                    type: 'error',
+                })
+            }
+
+            var users = res.data.users
+            var userid2name = {}
+            users.forEach(element => {
+                userid2name[element.ID] = element.name
+            });
+            this.userid2name = userid2name;
             console.log('get tabledata', res);
         },
         toOrderInfo: function(order_id) {
@@ -127,6 +150,7 @@ export default {
         }
     },
     created() {
+        this.getUserList()
         this.getTableData()
     },
     computed: { 

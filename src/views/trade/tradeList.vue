@@ -19,9 +19,14 @@
                             <el-text>{{ scope.row.user_id }}</el-text>
                         </template>
                     </el-table-column>
-                    <el-table-column label="金额" align="center">
+                    <el-table-column label="交易金额（元）" align="center">
                         <template #default="scope">
-                            <span>{{ scope.row.amount }}</span>
+                            <span>{{ scope.row.amount/100 }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="余额（元）" align="center">
+                        <template #default="scope">
+                            <span>{{ scope.row.balance/100 }}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="发生时间">
@@ -29,14 +34,14 @@
                             <span>{{ transferTime(scope.row.CreatedAt) }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" width="220" align="center">
+                    <!-- <el-table-column label="操作" width="220" align="center">
                         <template #header>
                             <el-input v-model="search" size="small" placeholder="输入关键字搜索" />
                         </template>
                         <template #default="scope">
                             <el-button type="primary" link @click="toOrderInfo(scope.row.ID)">查看详情</el-button>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
             </el-row>
             <el-row type="flex" justify="end" style="margin-top: 10px">
