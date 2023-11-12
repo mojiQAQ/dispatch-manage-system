@@ -5,7 +5,7 @@ import Home from '../views/home.vue';
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        redirect: '/dashboard',
+        redirect: '/order',
     },
     {
         path: '/',
@@ -59,15 +59,15 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "icon" */ '../views/trade/index.vue'),
             },
-            {
-                path: '/permission',
-                name: 'permission',
-                meta: {
-                    title: '订单管理',
-                    permiss: '3',
-                },
-                component: () => import(/* webpackChunkName: "permission" */ '../views/permission.vue'),
-            },
+            // {
+            //     path: '/permission',
+            //     name: 'permission',
+            //     meta: {
+            //         title: '订单管理',
+            //         permiss: '3',
+            //     },
+            //     component: () => import(/* webpackChunkName: "permission" */ '../views/permission.vue'),
+            // },
         ],
     },
     {

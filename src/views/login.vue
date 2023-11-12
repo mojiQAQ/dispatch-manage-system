@@ -25,7 +25,7 @@
 				<div class="login-btn">
 					<el-button type="primary" @click="submitForm(login)">登录</el-button>
 				</div>
-				<p class="login-tips">Tips : 用户名和密码随便填。</p>
+				<!-- <p class="login-tips">Tips : 用户名和密码随便填。</p> -->
 			</el-form>
 		</div>
 	</div>
@@ -47,8 +47,8 @@ interface LoginInfo {
 
 const router = useRouter();
 const param = reactive<LoginInfo>({
-	username: 'admin',
-	password: '123123'
+	username: '',
+	password: ''
 });
 
 const rules: FormRules = {
@@ -67,6 +67,11 @@ const submitForm = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate((valid: boolean) => {
 		if (valid) {
+			if (param.username != 'admin' || param.password != 'Dispatch@!123__') {
+				
+				ElMessage.error('账号或密码错误！');
+				return false;
+			}
 			ElMessage.success('登录成功');
 			localStorage.setItem('ms_username', param.username);
 			const keys = permiss.defaultList[param.username == 'admin' ? 'admin' : 'user'];

@@ -71,10 +71,10 @@
             <el-table :data="filterdata(subOrders, searchKey, search).slice(pageStart, pageEnd)">
                 <el-table-column label="子任务 ID" align="center">
                     <template #default="scope">
-                        <span>任务 {{ scope.row.ID }}</span>
+                        <span>子任务 {{ scope.row.ID }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="子任务 ID" align="center">
+                <el-table-column label="用户名" align="center">
                     <template #default="scope">
                         <span>{{ userid2name[scope.row.user_id] ? userid2name[scope.row.user_id] : '微信用户' }}</span>
                     </template>
@@ -143,7 +143,7 @@
 
 
 <script>
-import { getOrderInfoAPI, getSubOrdersAPI, reviewSubOrderAPI } from '../../api/index'
+import { getOrderInfoAPI, getSubOrdersAPI, reviewSubOrderAPI, getUsersAPI } from '../../api/index'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default ({

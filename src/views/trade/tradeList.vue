@@ -19,6 +19,11 @@
                             <el-text>{{ scope.row.user_id }}</el-text>
                         </template>
                     </el-table-column>
+                    <el-table-column label="用户名" align="center" width="100">
+                        <template #default="scope">
+                            <el-text>{{ userid2name[scope.row.user_id] ? userid2name[scope.row.user_id] : '微信用户' }}</el-text>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="交易金额（元）" align="center">
                         <template #default="scope">
                             <span>{{ scope.row.amount/100 }}</span>
@@ -62,13 +67,13 @@
 
 <script>
 
-import { getTradesAPI } from '../../api/index'
+import { getTradesAPI, getUsersAPI } from '../../api/index'
 import { ElMessage } from 'element-plus'
 
 export default {
     data() {
         return {
-
+            userid2name: {},
             tableData: [],
             searchKey: ['ID', 'type_cn', 'trade_id'],
             search: '',
@@ -89,6 +94,24 @@ export default {
 
             this.tableData = res.data.trades
             console.log('get tabledata', res);
+        },
+        getUserList: async function() {
+            let res = await getUsersAPI()
+            if (res.status != 200) {
+                ElMessage({
+                    showClose: true,
+                    message: res.data.message,
+                    type: 'error',
+                })
+            }
+
+            var users = res.data.users
+            var userid2name = {}
+            users.forEach(element => {
+                userid2name[element.ID] = element.name
+            });
+            this.userid2name = userid2name;
+            console.log('get tabledata', this.userid2name);
         },
         toOrderInfo: function(order_id) {
             this.$router.push({
@@ -123,6 +146,7 @@ export default {
         }
     },
     created() {
+        this.getUserList()
         this.getTableData()
     },
     computed: { 

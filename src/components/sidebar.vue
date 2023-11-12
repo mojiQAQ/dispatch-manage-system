@@ -32,12 +32,12 @@ import { useSidebarStore } from '../store/sidebar';
 import { useRoute } from 'vue-router';
 
 const items = [
-    {
-        icon: 'Odometer',
-        index: '/dashboard',
-        title: '系统首页',
-        permiss: '1',
-    },
+    // {
+    //     icon: 'Odometer',
+    //     index: '/dashboard',
+    //     title: '系统首页',
+    //     permiss: '1',
+    // },
     {
         icon: 'Calendar',
         index: '/user',
@@ -56,12 +56,12 @@ const items = [
         title: '交易记录',
         permiss: '4',
     },
-    {
-        icon: 'Warning',
-        index: '/permission',
-        title: '权限管理',
-        permiss: '5',
-    }
+    // {
+    //     icon: 'Warning',
+    //     index: '/permission',
+    //     title: '权限管理',
+    //     permiss: '5',
+    // }
 ];
 
 const route = useRoute();
